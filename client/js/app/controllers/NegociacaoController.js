@@ -10,23 +10,20 @@ class NegociacaoController {
 
         // Cria um proxy de NegociacoesView
         // para atualizar a view sempre que a lista
-        // receber uma nova negociação ou quando a lista
-        // for apagada/esvaziada.
-        this._listaNegociacoes = ProxyFactory.create (
+        // receber uma nova negociação (método adiciona) ou quando a lista
+        // for apagada ou esvaziada (método esvazia).
+        this._listaNegociacoes = new Bind (
             new ListaNegociacoes(),
-            ['adiciona', 'esvazia'], model =>
-                this._negociacoesView.update(model));
-        this._negociacoesView = new NegociacoesView($('#negociacoesView'));
-        this._negociacoesView.update(this._listaNegociacoes);
+            new NegociacoesView($('#negociacoesView')),
+            'adiciona', 'esvazia');
 
         // Cria um proxy para MensagemView
         // para atualizar a view toda vez que o valor
         // da mensagem for alterado.
-        this._mensagem = ProxyFactory.create(
-            new Mensagem(), ['texto'], model =>
-                this._mensagemView.update(model));
-        this._mensagemView = new MensagemView($('#mensagemView'));
-        this._mensagemView.update(this._mensagem);
+        this._mensagem = new Bind(
+            new Mensagem(),
+            new MensagemView($('#mensagemView')),
+            'texto');
     }
 
     _criaNegociacao() {
@@ -44,8 +41,7 @@ class NegociacaoController {
         this._listaNegociacoes.adiciona(this._criaNegociacao());
 
         this._limpaFormulario();
-        this._mensagem.texto = 'Negociacao adicionada com sucesso!';
-        this._mensagemView.update(this._mensagem);
+        this._mensagem.texto = 'Negociação adicionada com sucesso!';
     }
 
     _limpaFormulario() {
@@ -60,9 +56,7 @@ class NegociacaoController {
     apaga() {
 
         this._listaNegociacoes.esvazia();
-    
         this._mensagem.texto = 'Negociações apagadas com sucesso!';
-        this._mensagemView.update(this._mensagem);
     }
 
   }
