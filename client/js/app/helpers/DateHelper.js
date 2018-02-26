@@ -12,8 +12,8 @@ class DateHelper {
 
     static textoParaData(texto) {
 
-        if(!/^\d{4}-\d{2}-\d{2}$/.test(texto))
-            throw new Error('Deve estar no formato aaaa-mm-dd');
+        if(!/\d{2}\/\d{2}\/\d{4}/.test(texto)) 
+            throw new Error('Data deve estar no formato dd/mm/aaaa');
 
         // Exemplo de programação funcional em JS.
         // Uso de Arrow Function para decrementar o
@@ -22,7 +22,7 @@ class DateHelper {
         // Uso do spread operator (...) para passar cada
         // elemento de um array como cada um dos parâmetros
         // de uma função.
-        return new Date(...texto.split('-').map((item,indice) => item - indice % 2));
+        return new Date(...texto.split('/').reverse().map((item, indice) => item - indice % 2));
 
     }
 }

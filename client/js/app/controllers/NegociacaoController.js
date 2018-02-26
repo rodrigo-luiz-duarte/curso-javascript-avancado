@@ -15,7 +15,7 @@ class NegociacaoController {
         this._listaNegociacoes = new Bind (
             new ListaNegociacoes(),
             new NegociacoesView($('#negociacoesView')),
-            'adiciona', 'esvazia');
+            'adiciona', 'esvazia', 'ordena', 'inverteOrdem');
 
         // Cria um proxy para MensagemView
         // para atualizar a view toda vez que o valor
@@ -24,6 +24,8 @@ class NegociacaoController {
             new Mensagem(),
             new MensagemView($('#mensagemView')),
             'texto');
+        
+        this._ordemAtual = '';
     }
 
     _criaNegociacao() {
@@ -38,10 +40,14 @@ class NegociacaoController {
     adiciona(event) {
         
         event.preventDefault();
-        this._listaNegociacoes.adiciona(this._criaNegociacao());
-
-        this._limpaFormulario();
-        this._mensagem.texto = 'Negociação adicionada com sucesso!';
+        
+        try {
+            this._listaNegociacoes.adiciona(this._criaNegociacao());
+            this._mensagem.texto = 'Negociação adicionada com sucesso'; 
+            this._limpaFormulario();   
+        } catch(erro) {
+            this._mensagem.texto = erro;
+        }
     }
 
     _limpaFormulario() {
@@ -57,6 +63,29 @@ class NegociacaoController {
 
         this._listaNegociacoes.esvazia();
         this._mensagem.texto = 'Negociações apagadas com sucesso!';
+    }
+
+    importaNegociacoes() {
+
+        let service = new NegociacaoService();
+        service
+        .obterNegociacoes()
+        .then(negociacoes => {
+          negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao));
+          this._mensagem.texto = 'Negociações do período importadas com sucesso';
+        })
+        .catch(error => this._mensagem.texto = error);  
+    }
+
+    ordena(coluna) {
+
+        if(this._ordemAtual == coluna) {
+            this._listaNegociacoes.inverteOrdem();
+        } else {
+            this._listaNegociacoes.ordena((a, b) => a[coluna] - b[coluna]);    
+        }
+
+        this._ordemAtual = coluna;
     }
 
   }
