@@ -1,3 +1,11 @@
+import { ListaNegociacoes } from '../models/ListaNegociacoes';
+import { Mensagem } from '../models/Mensagem';
+import { NegociacaoView } from '../views/NegociacaoView';
+import { MensagemView } from '../views/MensagemView';
+import { NegociacaoService } from '../services/NegociacaoService';
+import { DateHelper } from '../helpers/DateHelper';
+import { Bind } from '../helpers/Bind';
+import { Negociacao } from '../models/Negociacao';
 class NegociacaoController {
 
     constructor() {
@@ -94,5 +102,12 @@ class NegociacaoController {
         this._negociacaoService.listar().then(negociacoes => negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))).catch(erro => this._mensagem.texto = erro);
     }
 
+}
+
+let negociacaoController = new NegociacaoController();
+
+export function currentInstance() {
+
+    return negociacaoController;
 }
 //# sourceMappingURL=NegociacaoController.js.map

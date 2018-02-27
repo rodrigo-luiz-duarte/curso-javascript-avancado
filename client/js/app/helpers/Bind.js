@@ -1,4 +1,5 @@
-class Bind {
+import { ProxyFactory } from '../services/ProxyFactory';
+export class Bind {
 
     // props é um REST parameter,
     // semelhante ao SPREAD operator
