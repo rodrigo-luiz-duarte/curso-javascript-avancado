@@ -15,4 +15,3 @@ class Mensagem {
         this._texto = texto;
     }
 }
-//# sourceMappingURL=Mensagem.js.map

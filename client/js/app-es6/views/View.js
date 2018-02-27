@@ -2,7 +2,7 @@ export class View {
 
     constructor(elemento) {
 
-        this._elemento = elemento;
+          this._elemento = elemento;
     }
 
     // Obriga as classes filhas a implementarem o método
@@ -16,4 +16,3 @@ export class View {
         this._elemento.innerHTML = this.template(model);
     }
 }
-//# sourceMappingURL=View.js.map

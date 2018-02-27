@@ -4,15 +4,16 @@ class DateHelper {
 
         throw new Error('Esta classe não pode ser instanciada');
     }
-
+    
     static dataParaTexto(data) {
 
-        return `${data.getDate()}/${data.getMonth() + 1}/${data.getFullYear()}`;
+        return `${data.getDate()}/${data.getMonth()+1}/${data.getFullYear()}`;
     }
 
     static textoParaData(texto) {
 
-        if (!/\d{2}\/\d{2}\/\d{4}/.test(texto)) throw new Error('Data deve estar no formato dd/mm/aaaa');
+        if(!/\d{2}\/\d{2}\/\d{4}/.test(texto)) 
+            throw new Error('Data deve estar no formato dd/mm/aaaa');
 
         // Exemplo de programação funcional em JS.
         // Uso de Arrow Function para decrementar o
@@ -22,6 +23,6 @@ class DateHelper {
         // elemento de um array como cada um dos parâmetros
         // de uma função.
         return new Date(...texto.split('/').reverse().map((item, indice) => item - indice % 2));
+
     }
 }
-//# sourceMappingURL=DateHelper.js.map

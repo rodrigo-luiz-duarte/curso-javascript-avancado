@@ -1,1 +1,7 @@
-/server/node_modules
+server/node_modules
+client/node_modules
+client/js/app
+client/js/.DS_Store
+client/.DS_Store
+client/js/app-es6/.DS_Store
+.DS_Store

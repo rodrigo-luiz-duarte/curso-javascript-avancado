@@ -15,14 +15,16 @@ export class NegociacoesView extends View {
             </tr>
             </thead>
             <tbody>
-                ${model.negociacoes.map(n => `
+                ${model.negociacoes.map(n => 
+                    `
                     <tr>
                         <td>${DateHelper.dataParaTexto(n.data)}</td>
                         <td>${n.quantidade}</td>
                         <td>${n.valor}</td>
                         <td>${n.volume}</td>
                     </tr>
-                    `).join('')}
+                    `
+                    ).join('')}
             </tbody>
             <!-- Exemplo de programação funcional usando a função reduce do Array -->
             <tfoot>
@@ -35,4 +37,3 @@ export class NegociacoesView extends View {
             `;
     }
 }
-//# sourceMappingURL=NegociacoesView.js.map
