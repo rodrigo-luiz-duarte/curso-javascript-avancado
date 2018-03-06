@@ -51,8 +51,8 @@
 
     <script src="node_modules/systemjs/dist/system.js"></script>
     <script>
-        System.defaultJSExtensions = true;
-        System.import('js/app/boot').catch(function(err){
+        System.defaultJSExtensions = true; // permite omitir a extensão .js dos imports
+        System.import('js/app/boot').catch(function(err){ 
             console.error(err);
         });
     </script>
