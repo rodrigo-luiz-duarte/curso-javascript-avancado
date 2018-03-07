@@ -1,113 +1,191 @@
-import { ListaNegociacoes } from '../models/ListaNegociacoes';
-import { Mensagem } from '../models/Mensagem';
-import { NegociacaoView } from '../views/NegociacaoView';
-import { MensagemView } from '../views/MensagemView';
-import { NegociacaoService } from '../services/NegociacaoService';
-import { DateHelper } from '../helpers/DateHelper';
-import { Bind } from '../helpers/Bind';
-import { Negociacao } from '../models/Negociacao';
-class NegociacaoController {
+'use strict';
 
-    constructor() {
+System.register(['../models/ListaNegociacoes', '../models/Mensagem', '../views/NegociacoesView', '../views/MensagemView', '../services/NegociacaoService', '../helpers/DateHelper', '../helpers/Bind', '../models/Negociacao'], function (_export, _context) {
+    "use strict";
 
-        let $ = document.querySelector.bind(document);
+    var ListaNegociacoes, Mensagem, NegociacoesView, MensagemView, NegociacaoService, DateHelper, Bind, Negociacao, _createClass, NegociacaoController, negociacaoController;
 
-        this._inputData = $('#data');
-        this._inputQuantidade = $('#quantidade');
-        this._inputValor = $('#valor');
-
-        // Cria um proxy de NegociacoesView
-        // para atualizar a view sempre que a lista
-        // receber uma nova negociação (método adiciona) ou quando a lista
-        // for apagada ou esvaziada (método esvazia).
-        this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($('#negociacoesView')), 'adiciona', 'esvazia', 'ordena', 'inverteOrdem');
-
-        // Cria um proxy para MensagemView
-        // para atualizar a view toda vez que o valor
-        // da mensagem for alterado.
-        this._mensagem = new Bind(new Mensagem(), new MensagemView($('#mensagemView')), 'texto');
-
-        this._ordemAtual = '';
-
-        this._negociacaoService = new NegociacaoService();
-
-        this._init();
-    }
-
-    _init() {
-
-        this._listaTodos();
-
-        setInterval(() => {
-            this.importaNegociacoes();
-        }, 3000);
-    }
-
-    _criaNegociacao() {
-
-        return new Negociacao(DateHelper.textoParaData(this._inputData.value), parseInt(this._inputQuantidade.value), parseFloat(this._inputValor.value));
-    }
-
-    adiciona(event) {
-
-        event.preventDefault();
-
-        let negociacao = this._criaNegociacao();
-
-        this._negociacaoService.salvar(negociacao).then(mensagem => {
-            this._listaNegociacoes.adiciona(negociacao);
-            this._mensagem.texto = mensagem;
-            this._limpaFormulario();
-        }).catch(erro => this._mensagem.texto = erro);
-    }
-
-    _limpaFormulario() {
-
-        this._inputData.value = '';
-        this._inputQuantidade.value = 1;
-        this._inputValor.value = 0.0;
-
-        this._inputData.focus();
-    }
-
-    apaga() {
-
-        this._negociacaoService.apagar().then(mensagem => {
-            this._mensagem.texto = mensagem;
-            this._listaNegociacoes.esvazia();
-        }).catch(erro => this._mensagem.texto = erro);
-    }
-
-    importaNegociacoes() {
-
-        this._negociacaoService.importar(this._listaNegociacoes.negociacoes).then(negociacoes => negociacoes.forEach(negociacao => {
-            this._listaNegociacoes.adiciona(negociacao);
-            this._mensagem.texto = 'Negociações do período importadas';
-        })).catch(erro => this._mensagem.texto = erro);
-    }
-
-    ordena(coluna) {
-
-        if (this._ordemAtual == coluna) {
-            this._listaNegociacoes.inverteOrdem();
-        } else {
-            this._listaNegociacoes.ordena((a, b) => a[coluna] - b[coluna]);
+    function _classCallCheck(instance, Constructor) {
+        if (!(instance instanceof Constructor)) {
+            throw new TypeError("Cannot call a class as a function");
         }
-
-        this._ordemAtual = coluna;
     }
 
-    _listaTodos() {
+    return {
+        setters: [function (_modelsListaNegociacoes) {
+            ListaNegociacoes = _modelsListaNegociacoes.ListaNegociacoes;
+        }, function (_modelsMensagem) {
+            Mensagem = _modelsMensagem.Mensagem;
+        }, function (_viewsNegociacoesView) {
+            NegociacoesView = _viewsNegociacoesView.NegociacoesView;
+        }, function (_viewsMensagemView) {
+            MensagemView = _viewsMensagemView.MensagemView;
+        }, function (_servicesNegociacaoService) {
+            NegociacaoService = _servicesNegociacaoService.NegociacaoService;
+        }, function (_helpersDateHelper) {
+            DateHelper = _helpersDateHelper.DateHelper;
+        }, function (_helpersBind) {
+            Bind = _helpersBind.Bind;
+        }, function (_modelsNegociacao) {
+            Negociacao = _modelsNegociacao.Negociacao;
+        }],
+        execute: function () {
+            _createClass = function () {
+                function defineProperties(target, props) {
+                    for (var i = 0; i < props.length; i++) {
+                        var descriptor = props[i];
+                        descriptor.enumerable = descriptor.enumerable || false;
+                        descriptor.configurable = true;
+                        if ("value" in descriptor) descriptor.writable = true;
+                        Object.defineProperty(target, descriptor.key, descriptor);
+                    }
+                }
 
-        this._negociacaoService.listar().then(negociacoes => negociacoes.forEach(negociacao => this._listaNegociacoes.adiciona(negociacao))).catch(erro => this._mensagem.texto = erro);
-    }
+                return function (Constructor, protoProps, staticProps) {
+                    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+                    if (staticProps) defineProperties(Constructor, staticProps);
+                    return Constructor;
+                };
+            }();
 
-}
+            NegociacaoController = function () {
+                function NegociacaoController() {
+                    _classCallCheck(this, NegociacaoController);
 
-let negociacaoController = new NegociacaoController();
+                    var $ = document.querySelector.bind(document);
 
-export function currentInstance() {
+                    this._inputData = $('#data');
+                    this._inputQuantidade = $('#quantidade');
+                    this._inputValor = $('#valor');
 
-    return negociacaoController;
-}
+                    // Cria um proxy de NegociacoesView
+                    // para atualizar a view sempre que a lista
+                    // receber uma nova negociação (método adiciona) ou quando a lista
+                    // for apagada ou esvaziada (método esvazia).
+                    this._listaNegociacoes = new Bind(new ListaNegociacoes(), new NegociacoesView($('#negociacoesView')), 'adiciona', 'esvazia', 'ordena', 'inverteOrdem');
+
+                    // Cria um proxy para MensagemView
+                    // para atualizar a view toda vez que o valor
+                    // da mensagem for alterado.
+                    this._mensagem = new Bind(new Mensagem(), new MensagemView($('#mensagemView')), 'texto');
+
+                    this._ordemAtual = '';
+
+                    this._negociacaoService = new NegociacaoService();
+
+                    this._init();
+                }
+
+                _createClass(NegociacaoController, [{
+                    key: '_init',
+                    value: function _init() {
+                        var _this = this;
+
+                        this._listaTodos();
+
+                        setInterval(function () {
+                            _this.importaNegociacoes();
+                        }, 3000);
+                    }
+                }, {
+                    key: '_criaNegociacao',
+                    value: function _criaNegociacao() {
+
+                        return new Negociacao(DateHelper.textoParaData(this._inputData.value), parseInt(this._inputQuantidade.value), parseFloat(this._inputValor.value));
+                    }
+                }, {
+                    key: 'adiciona',
+                    value: function adiciona(event) {
+                        var _this2 = this;
+
+                        event.preventDefault();
+
+                        var negociacao = this._criaNegociacao();
+
+                        this._negociacaoService.salvar(negociacao).then(function (mensagem) {
+                            _this2._listaNegociacoes.adiciona(negociacao);
+                            _this2._mensagem.texto = mensagem;
+                            _this2._limpaFormulario();
+                        }).catch(function (erro) {
+                            return _this2._mensagem.texto = erro;
+                        });
+                    }
+                }, {
+                    key: '_limpaFormulario',
+                    value: function _limpaFormulario() {
+
+                        this._inputData.value = '';
+                        this._inputQuantidade.value = 1;
+                        this._inputValor.value = 0.0;
+
+                        this._inputData.focus();
+                    }
+                }, {
+                    key: 'apaga',
+                    value: function apaga() {
+                        var _this3 = this;
+
+                        this._negociacaoService.apagar().then(function (mensagem) {
+                            _this3._mensagem.texto = mensagem;
+                            _this3._listaNegociacoes.esvazia();
+                        }).catch(function (erro) {
+                            return _this3._mensagem.texto = erro;
+                        });
+                    }
+                }, {
+                    key: 'importaNegociacoes',
+                    value: function importaNegociacoes() {
+                        var _this4 = this;
+
+                        this._negociacaoService.importar(this._listaNegociacoes.negociacoes).then(function (negociacoes) {
+                            return negociacoes.forEach(function (negociacao) {
+                                _this4._listaNegociacoes.adiciona(negociacao);
+                                _this4._mensagem.texto = 'Negociações do período importadas';
+                            });
+                        }).catch(function (erro) {
+                            return _this4._mensagem.texto = erro;
+                        });
+                    }
+                }, {
+                    key: 'ordena',
+                    value: function ordena(coluna) {
+
+                        if (this._ordemAtual == coluna) {
+                            this._listaNegociacoes.inverteOrdem();
+                        } else {
+                            this._listaNegociacoes.ordena(function (a, b) {
+                                return a[coluna] - b[coluna];
+                            });
+                        }
+
+                        this._ordemAtual = coluna;
+                    }
+                }, {
+                    key: '_listaTodos',
+                    value: function _listaTodos() {
+                        var _this5 = this;
+
+                        this._negociacaoService.listar().then(function (negociacoes) {
+                            return negociacoes.forEach(function (negociacao) {
+                                return _this5._listaNegociacoes.adiciona(negociacao);
+                            });
+                        }).catch(function (erro) {
+                            return _this5._mensagem.texto = erro;
+                        });
+                    }
+                }]);
+
+                return NegociacaoController;
+            }();
+
+            negociacaoController = new NegociacaoController();
+            function currentInstance() {
+
+                return negociacaoController;
+            }
+
+            _export('currentInstance', currentInstance);
+        }
+    };
+});
 //# sourceMappingURL=NegociacaoController.js.map

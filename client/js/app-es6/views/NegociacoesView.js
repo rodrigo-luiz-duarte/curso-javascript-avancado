@@ -1,6 +1,6 @@
 import { View } from './View';
 import { DateHelper } from '../helpers/DateHelper';
-import { currentInstance } from '../controlers/NegociacaoController';
+import { currentInstance } from '../controllers/NegociacaoController';
 
 export class NegociacoesView extends View {
 
